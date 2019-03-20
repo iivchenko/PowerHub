@@ -8,6 +8,7 @@ Set-Variable -Name bets   -Value "C:\_src\Betssons"
 Set-Variable -Name paas   -Value "$bets\Payment - PAAS\paas"Set-Variable -Name psp    -Value "$bets\Payment - PSP\psp"Set-Variable -Name ppv    -Value "$bets\Payment - Payment Pages\ppv"
 Set-Variable -Name kyc    -Value "$bets\Payment - KYC\kycnow"
 Set-Variable -Name bc     -Value "$bets\Payment - Branded Cards\branded-cards"
+Set-Variable -Name fraud  -Value "$bets\Payment - Fraud\fraud-score"
 
 Set-Variable -Name MyHome -Value $bets
 
@@ -28,7 +29,7 @@ function go()
     param
     (
         [Parameter(Mandatory=$true, Position=0)]
-        [ValidateSet("bc", "paas", "psp", "bets","kyc","ppv")]
+        [ValidateSet("bc", "paas", "psp", "bets","kyc","ppv", "fraud")]
         [string]$name
     )
 
@@ -57,12 +58,16 @@ function go()
         {
             cd $kyc
         }
-
         
         'ppv' 
         {
             cd $ppv
-        }        
+        }
+		
+		'fraud'
+        {
+            cd $fraud
+        }     
     }
 }
 
@@ -71,7 +76,27 @@ function open()
     param
     (
         [Parameter(Mandatory=$true, Position=0)]
-        [ValidateSet("vs", "bcweb", "bcapi", "bctest", "bcall", "paas", "paastest", "paasall", "psp", "kyc", "kyctest", "kycall","ppvapi", "ppvweb", "ppvtest", "ppvall", "done")]
+        [ValidateSet(
+			"vs", 
+			"bcweb", 
+			"bcapi", 
+			"bctest", 
+			"bcall", 
+			"paas", 
+			"paastest", 
+			"paasall", 
+			"pspall", 
+			"pspapi", 
+			"psptests", 
+			"pspfakes", 
+			"kyc", 
+			"kyctest", 
+			"kycall",
+			"ppvapi", 
+			"ppvweb", 
+			"ppvtest", 
+			"ppvall", 
+			"done")]
         [string]$name
     )
 
@@ -121,9 +146,26 @@ function open()
             . "$paas\Betsson Payments Testing\Betsson.Payments.Testing.sln"
         }
 
-        'psp'
+        'pspapi'
         {
             . "$psp\Psp\Psp.sln"
+        }
+		
+		'psptests'
+        {
+            . "$psp\Psp.Testing\Psp.Testing.sln"
+        }
+		
+		'pspfakes'
+        {
+            . "$psp\Psp.Fakes\Psp.Fakes.sln"
+        }
+		
+		'pspall'
+        {
+			. "$psp\Psp\Psp.sln"
+			. "$psp\Psp.Testing\Psp.Testing.sln"
+            . "$psp\Psp.Fakes\Psp.Fakes.sln"
         }
 
         'kyc'
@@ -164,6 +206,12 @@ function open()
             . "$ppv\WebAPI\Payment.Web.sln"
             . "$ppv\Web\PaymentPagesV.sln"
             . "$ppv\Tests\PaymentPagesV.UITests.sln"
+        }
+		
+		'fraudall'
+        {
+            . "$fraud\Fraud\Fraud.sln"
+            . "$fraud\FraudTesting\Fraud.Testing.sln"
         }
 
         'done'
